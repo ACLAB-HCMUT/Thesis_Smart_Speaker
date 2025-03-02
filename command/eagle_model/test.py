@@ -6,6 +6,7 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 os.chdir(script_dir)
 load_dotenv()
 
+
 access_key = os.getenv("EAGLE_KEY")
 
 with open("speaker_profile.eagle", "rb") as f:
