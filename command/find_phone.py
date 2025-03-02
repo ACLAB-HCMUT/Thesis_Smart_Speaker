@@ -1,5 +1,3 @@
-import sys
-sys.stdout.reconfigure(encoding='utf-8')
 from twilio.rest import Client
 import os
 from dotenv import load_dotenv

@@ -6,7 +6,6 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 os.chdir(script_dir)
 load_dotenv()
 
-
 access_key = os.getenv("EAGLE_KEY")
 
 with open("speaker_profile.eagle", "rb") as f:
@@ -42,6 +41,11 @@ try:
        
         scores = eagle.process(audio_frame)
         print(scores)
+        if scores and scores[0] == 0.0:
+            print("Nhận diện thành công!")
+        else:
+            print("Không phát hiện giọng nói.")
+
 except KeyboardInterrupt:
    
     pass
