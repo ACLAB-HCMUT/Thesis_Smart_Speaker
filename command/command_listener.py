@@ -34,49 +34,49 @@ def listen_commands(max_attempts=2):
     return None
 
 
-# def listen_command(max_attempts=2, filter_len=5, mu=0.01):
-#     recognizer = sr.Recognizer()
-#     attempts = 0
-#     while attempts < max_attempts:
-#         with sr.Microphone() as source:
-#             print("Listening........................")
-#             recognizer.adjust_for_ambient_noise(source, duration=1)
-#             try:
-#                 audio = recognizer.listen(source, timeout=7, phrase_time_limit=7)
-#                 audio_data = np.frombuffer(audio.frame_data, dtype=np.int16)
+def listen_command(max_attempts=2, filter_len=5, mu=0.01):
+    recognizer = sr.Recognizer()
+    attempts = 0
+    while attempts < max_attempts:
+        with sr.Microphone() as source:
+            print("Listening........................")
+            recognizer.adjust_for_ambient_noise(source, duration=1)
+            try:
+                audio = recognizer.listen(source, timeout=7, phrase_time_limit=7)
+                audio_data = np.frombuffer(audio.frame_data, dtype=np.int16)
                 
-#                 reference_signal = np.random.normal(0, 1, len(audio_data)) 
+                reference_signal = np.random.normal(0, 1, len(audio_data)) 
                 
-#                 filtered_audio, weights = lms_filter(audio_data, reference_signal, filter_len, mu)
+                filtered_audio, weights = lms_filter(audio_data, reference_signal, filter_len, mu)
                 
-#                 filtered_audio_bytes = filtered_audio.astype(np.int16).tobytes()
-#                 audio_filtered = sr.AudioData(filtered_audio_bytes, audio.sample_rate, audio.sample_width)
+                filtered_audio_bytes = filtered_audio.astype(np.int16).tobytes()
+                audio_filtered = sr.AudioData(filtered_audio_bytes, audio.sample_rate, audio.sample_width)
 
-#                 command = recognizer.recognize_google(audio_filtered, language="vi-VN")
-#                 print(f"Lệnh của bạn: {command}")
-#                 return command.lower()
-#             except sr.UnknownValueError:
-#                 attempts += 1
-#                 print("Không thể nhận diện được giọng nói.")
-#                 speak("Bạn nói gì tôi nghe không rõ.")
-#             except sr.WaitTimeoutError:
-#                 attempts += 1
-#                 print("Không nghe thấy giọng nói. Hãy thử lại.")
-#                 speak("Môi trường có vẻ hơi ồn, hãy thử lại ở nơi yên tĩnh hơn.")
-#             except sr.RequestError as e:
-#                 print(f"Không thể yêu cầu dịch vụ Google Speech Recognition; {e}")
-#                 speak("Có vấn đề với kết nối mạng, vui lòng kiểm tra kết nối mạng.")
-#                 return None
-#     speak("Hẹn gặp lại")
-#     return None
+                command = recognizer.recognize_google(audio_filtered, language="vi-VN")
+                print(f"Lệnh của bạn: {command}")
+                return command.lower()
+            except sr.UnknownValueError:
+                attempts += 1
+                print("Không thể nhận diện được giọng nói.")
+                speak("Bạn nói gì tôi nghe không rõ.")
+            except sr.WaitTimeoutError:
+                attempts += 1
+                print("Không nghe thấy giọng nói. Hãy thử lại.")
+                speak("Môi trường có vẻ hơi ồn, hãy thử lại ở nơi yên tĩnh hơn.")
+            except sr.RequestError as e:
+                print(f"Không thể yêu cầu dịch vụ Google Speech Recognition; {e}")
+                speak("Có vấn đề với kết nối mạng, vui lòng kiểm tra kết nối mạng.")
+                return None
+    speak("Hẹn gặp lại")
+    return None
 
 def load_google_credentials():
     credentials_path = MYKEY_PATH
     if not os.path.exists(credentials_path):
         raise FileNotFoundError(f"Không tìm thấy file credentials tại: {credentials_path}")
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials_path
-load_google_credentials() 
-def listen_command(max_attempts=2, timeout_duration=7):
+# load_google_credentials() 
+def listen_commands(max_attempts=2, timeout_duration=7):
     
     client = speech.SpeechClient()
 
