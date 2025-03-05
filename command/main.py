@@ -7,6 +7,7 @@ from playsound import playsound
 from audio_utils import speak
 import re
 import threading
+from eagle_model.speech_detector import check_voice_match
 WELCOME_SOUND="sound/welcome.mp3"
 def import_modules():
     global process_command, speak, listen_command
@@ -23,7 +24,7 @@ def main():
     follow_up_questions = [
         "Em có thể giúp gì nữa ạ?",
     ]
-
+    
     playsound(WELCOME_SOUND)
     # monitor_temperature()
     # monitor_moisture()
@@ -31,7 +32,12 @@ def main():
     import_thread.join()
     speak(greeting)
     while True:
+        is_admin=False
+        admin_thread = threading.Thread(target=lambda: check_voice_match())
+        admin_thread.start()
         command = listen_command()
+        admin_thread.join() 
+        is_admin = check_voice_match()
         if command is None:
             print("Terminated due to failure to recognize speech.")
             break
@@ -41,7 +47,7 @@ def main():
             print(f"End-----------------")
             break
         else:
-            end_program=process_command(command)
+            end_program=process_command(command,is_admin)
             if end_program == 1:
                 break
             follow_up = random.choice(follow_up_questions)
