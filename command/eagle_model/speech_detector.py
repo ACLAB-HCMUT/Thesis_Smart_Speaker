@@ -97,8 +97,9 @@ def check_voice_match(threshold=0.8, device_index=1):
             if scores and scores[0] >= threshold:
                 print("Nhận diện thành công!")
                 return True
-            else:
-                print("Không phát hiện giọng nói.")
+            # else:
+                # print("Không phát hiện giọng nói.")
+                
     except KeyboardInterrupt:
         pass
     finally:
@@ -108,4 +109,4 @@ def check_voice_match(threshold=0.8, device_index=1):
     
     return False
 
-# print(check_voice_match())
+print(check_voice_match())
