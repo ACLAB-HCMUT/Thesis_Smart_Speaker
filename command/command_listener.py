@@ -6,7 +6,7 @@ from microphone_stream import MicrophoneStream
 from lms_filter import *
 import time
 MYKEY_PATH = os.path.join(os.getcwd(), "my_key.json")
-def listen_commands(max_attempts=2):
+def listen_command(max_attempts=2):
     recognizer = sr.Recognizer()
     attempts = 0
     while attempts < max_attempts:
@@ -34,7 +34,7 @@ def listen_commands(max_attempts=2):
     return None
 
 
-def listen_command(max_attempts=2, filter_len=5, mu=0.01):
+def listen_commands(max_attempts=2, filter_len=5, mu=0.01):
     recognizer = sr.Recognizer()
     attempts = 0
     while attempts < max_attempts:
@@ -75,7 +75,7 @@ def load_google_credentials():
     if not os.path.exists(credentials_path):
         raise FileNotFoundError(f"Không tìm thấy file credentials tại: {credentials_path}")
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials_path
-# load_google_credentials() 
+load_google_credentials() 
 def listen_commands(max_attempts=2, timeout_duration=7):
     
     client = speech.SpeechClient()
