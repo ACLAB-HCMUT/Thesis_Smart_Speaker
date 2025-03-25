@@ -4,10 +4,10 @@ import os
 sys.path.append(os.path.dirname(__file__))
 # from notification import monitor_temperature, monitor_moisture
 from playsound import playsound
+WELCOME_SOUND="command/sound/welcome2.mp3"
 from audio_utils import speak
 import re
 import threading
-WELCOME_SOUND="sound/welcome.mp3"
 def import_modules():
     global process_command, speak, listen_command
     from command_processor import process_command
@@ -15,7 +15,6 @@ def import_modules():
     from command_listener import listen_command
 
 def main():
-
     import_thread = threading.Thread(target=import_modules)
     import_thread.start()
     end_keywords_pattern = re.compile(r"\b(hết rồi|hết|kết|kết thúc|cảm ơn|thanks|thank you)\b", re.IGNORECASE)
@@ -24,12 +23,12 @@ def main():
         "Em có thể giúp gì nữa ạ?",
     ]
 
-    playsound(WELCOME_SOUND)
     # monitor_temperature()
     # monitor_moisture()
+    playsound(WELCOME_SOUND)
     greeting = random.choice(greetings)
     import_thread.join()
-    speak(greeting)
+    # speak(greeting)
     while True:
         command = listen_command()
         if command is None:
