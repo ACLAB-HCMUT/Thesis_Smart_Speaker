@@ -35,6 +35,7 @@ LDFLAGS += -lm 						# Link to math.h
 LDFLAGS += -lstdc++					# Link to stdc++.h
 LDFLAGS += -lasound                 # Link to ALSA (audio capture library)
 LDFLAGS += $(shell python3-config --ldflags)  # Link Python library
+LDFLAGS += -lportaudio -lpthread
 LDFLAGS += -L/usr/lib/python3.11/config-3.11-aarch64-linux-gnu -lpython3.11 # Pham Tien Dat add
 
 # Include C source code for required libraries
