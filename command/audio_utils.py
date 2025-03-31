@@ -3,10 +3,10 @@ from playsound import playsound
 from pydub import AudioSegment
 from google.cloud import texttospeech
 import os
-# SOUND_PATH = "command/sound/command.mp3" 
-# MYKEY_PATH = "command/my_key.json"
-SOUND_PATH = "sound/command.mp3" 
-MYKEY_PATH = "my_key.json"
+SOUND_PATH = "command/sound/command.mp3" 
+MYKEY_PATH = "command/my_key.json"
+# SOUND_PATH = "sound/command.mp3" 
+# MYKEY_PATH = "my_key.json"
 default_voice="default"
 def load_google_credentials():
    
@@ -19,7 +19,7 @@ def load_google_credentials():
     
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials_path
     print(f"Đã load credentials từ: {credentials_path}")
-load_google_credentials()
+# load_google_credentials()
 def speak_female(text):
     try:
         client = texttospeech.TextToSpeechClient()
@@ -93,13 +93,13 @@ def speak(text):
         elif default_voice == "female":
             speak_female(text)
         else:
-            speak_female(text)
-            # tts = gTTS(text=text, lang='vi')
-            # tts.save(SOUND_PATH)
-            # audio = AudioSegment.from_file(SOUND_PATH)
-            # audio = audio.speedup(playback_speed=1.25)
-            # audio.export(SOUND_PATH, format="mp3")
-            # playsound(SOUND_PATH)
+            # speak_female(text)
+            tts = gTTS(text=text, lang='vi')
+            tts.save(SOUND_PATH)
+            audio = AudioSegment.from_file(SOUND_PATH)
+            audio = audio.speedup(playback_speed=1.25)
+            audio.export(SOUND_PATH, format="mp3")
+            playsound(SOUND_PATH)
     except Exception as e:
         print(f"Lỗi: {e}")
 

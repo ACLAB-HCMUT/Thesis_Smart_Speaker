@@ -26,8 +26,7 @@ def update_device_state(access_token, data):
     client.loop_start()
     time.sleep(2) 
 
-# ACCESS_TOKEN = "6e2vlzqcf3ci6cd2p8n3"
-ACCESS_TOKEN = "ozu62mz72ssdznrcqvhy"
+ACCESS_TOKEN = "6e2vlzqcf3ci6cd2p8n3"
 
 update_device_state(ACCESS_TOKEN, {"device_state": 1})  
 # update_device_state(ACCESS_TOKEN, {"device_state": 0})  
