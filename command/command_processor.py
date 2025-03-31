@@ -1,6 +1,6 @@
-# from control import set_volume
+from control import set_volume
 from chatgpt import get_response
-# from device_utils import is_device_command
+from device_utils import is_device_command
 from audio_utils import speak, set_default_voice
 from search_agent import search_and_summarize
 from reminders import alarm_reminder_action
@@ -12,9 +12,9 @@ from time_utils import get_current_time,get_current_date_vn_format
 from kid_mode import play_sound_animal, play_story_sound
 from navigation import process_direction
 # from math_calculation import math_calculation
-# from tuning import control
-from find_phone import make_call
+from tuning import control
 from weather import fetch_weather_data 
+from telecom_send import request_call
 import re
 
 current_eight_d_audio = None
@@ -60,66 +60,66 @@ def process_command(command):
         print(response)
         speak(response)
         return 1
-    # elif is_device_command(command):
-    #     actions = {
-    #         'bật': 'on',
-    #         'mở': 'on',
-    #         'tắt': 'off',
-    #         'đóng': 'off'
-    #     }
-    #     devices = {
-    #         'đèn': 'led1',
-    #         'quạt': 'fan',  
-    #         'cửa': 'door',
-    #         'máy lạnh': 'ac'
-    #     }
-    #     rooms = ['phòng khách', 'phòng ngủ', 'phòng bếp']
+    elif is_device_command(command):
+        actions = {
+            'bật': 'on',
+            'mở': 'on',
+            'tắt': 'off',
+            'đóng': 'off'
+        }
+        devices = {
+            'đèn': 'led1',
+            'quạt': 'fan',  
+            'cửa': 'door',
+            'máy lạnh': 'ac'
+        }
+        rooms = ['phòng khách', 'phòng ngủ', 'phòng bếp']
 
-    #     room_pattern = r'\b(' + '|'.join(rooms) + r')\b'
-    #     device_pattern = r'\b(' + '|'.join(devices) + r')\b'
-    #     action_pattern = r'\b(' + '|'.join(actions.keys()) + r')\b'
+        room_pattern = r'\b(' + '|'.join(rooms) + r')\b'
+        device_pattern = r'\b(' + '|'.join(devices) + r')\b'
+        action_pattern = r'\b(' + '|'.join(actions.keys()) + r')\b'
 
-    #     room_match = re.search(room_pattern, command, re.IGNORECASE)
-    #     device_match = re.search(device_pattern, command, re.IGNORECASE)
-    #     action_match = re.search(action_pattern, command, re.IGNORECASE)
-    #     response=""
+        room_match = re.search(room_pattern, command, re.IGNORECASE)
+        device_match = re.search(device_pattern, command, re.IGNORECASE)
+        action_match = re.search(action_pattern, command, re.IGNORECASE)
+        response=""
         
-    #     # case 1: full command
-    #     if room_match and device_match and action_match:
-    #         check=control(command)
-    #         # if check==1:
-    #         #     return 1 
-    #         response="Em đã thực hiện lệnh ạ."           
-    #     # case 2: missing device, but room, action are present
-    #     elif room_match and action_match and not device_match:
-    #         room = room_match.group(0)
-    #         action = actions[action_match.group(0).lower()]
-    #         response=f"Vui lòng chỉ định thiết bị để {action_match.group(0).lower()} ở {room}."
+        # case 1: full command
+        if room_match and device_match and action_match:
+            check=control(command)
+            # if check==1:
+            #     return 1 
+            response="Em đã thực hiện lệnh ạ."           
+        # case 2: missing device, but room, action are present
+        elif room_match and action_match and not device_match:
+            room = room_match.group(0)
+            action = actions[action_match.group(0).lower()]
+            response=f"Vui lòng chỉ định thiết bị để {action_match.group(0).lower()} ở {room}."
 
-    #     # case 3: missing action, but room, device are present
-    #     elif room_match and device_match and not action_match:
-    #         room = room_match.group(0)
-    #         device = device_match.group(0)
-    #         response=f"Vui lòng chỉ định hành động cho {device} ở {room}."
+        # case 3: missing action, but room, device are present
+        elif room_match and device_match and not action_match:
+            room = room_match.group(0)
+            device = device_match.group(0)
+            response=f"Vui lòng chỉ định hành động cho {device} ở {room}."
         
-    #     # case 4: room mentioned but missing both action and device
-    #     elif room_match and not action_match and not device_match:
-    #         room = room_match.group(0)
-    #         response=f"Vui lòng chỉ định thiết bị và hành động ở {room}."
-    #     elif action_match and device_match and not room_match:
-    #         device = device_match.group(0)
-    #         action = action_match.group(0)
-    #         response = f"Vui lòng chỉ định phòng để {action_match.group(0).lower()} {device}."
-    #     elif action_match and device_match and not room_match:
-    #         device = device_match.group(0)
-    #         action = action_match.group(0)
-    #         response = f"Vui lòng chỉ định phòng để {action_match.group(0).lower()} {device}."
-    #     # case 5: command not recognized
-    #     else:
-    #         response="Lệnh không được nhận diện, vui lòng thử lại."
+        # case 4: room mentioned but missing both action and device
+        elif room_match and not action_match and not device_match:
+            room = room_match.group(0)
+            response=f"Vui lòng chỉ định thiết bị và hành động ở {room}."
+        elif action_match and device_match and not room_match:
+            device = device_match.group(0)
+            action = action_match.group(0)
+            response = f"Vui lòng chỉ định phòng để {action_match.group(0).lower()} {device}."
+        elif action_match and device_match and not room_match:
+            device = device_match.group(0)
+            action = action_match.group(0)
+            response = f"Vui lòng chỉ định phòng để {action_match.group(0).lower()} {device}."
+        # case 5: command not recognized
+        else:
+            response="Lệnh không được nhận diện, vui lòng thử lại."
         
-    #     print(response)
-    #     speak(response)
+        print(response)
+        speak(response)
     elif command =="hôm nay":
         today= get_current_date_vn_format()
         today += " "
@@ -149,12 +149,7 @@ def process_command(command):
     ):
         print("Đang lấy danh sách sự kiện...")
         speak(get_calendar_events())
-    elif any(
-        keyword in command
-        for keyword in ["tìm điện thoại", "tìm", "kiếm điện thoại","kiếm"]
-    ):
-        make_call()
-        speak("Đang nhá máy điện thoại")
+    
     elif any(
         keyword in command
         for keyword in [
@@ -216,20 +211,20 @@ def process_command(command):
     #             set_sensor_status(TEMPERATURE_FEED, True)
     #         elif "tắt" in command:
     #             set_sensor_status(TEMPERATURE_FEED, False)
-    # elif "âm lượng" in command or "loa" in command:
-    #     volume_level = re.search(r"\d+", command)
-    #     if volume_level:
-    #         volume_level = int(volume_level.group())
-    #         if volume_level > 100:
-    #             volume_level = 100
-    #         elif volume_level < 0:
-    #             volume_level = 0
-    #     else:
-    #         volume_level = 50
-    #     set_volume(volume_level)
-    #     response = f"Đã điều chỉnh âm lượng đến {volume_level}%."
-    #     print(response)
-    #     speak(response)
+    elif "âm lượng" in command or "loa" in command:
+        volume_level = re.search(r"\d+", command)
+        if volume_level:
+            volume_level = int(volume_level.group())
+            if volume_level > 100:
+                volume_level = 100
+            elif volume_level < 0:
+                volume_level = 0
+        else:
+            volume_level = 50
+        set_volume(volume_level)
+        response = f"Đã điều chỉnh âm lượng đến {volume_level}%."
+        print(response)
+        speak(response)
     elif any(keyword in command for keyword in ["dừng nhạc", "tắt nhạc"]):
         stop_music()
         # stop_music8()
@@ -248,7 +243,12 @@ def process_command(command):
         tavily_answer = search_and_summarize(command)
         speak(tavily_answer)
         print(f"Final Answer: {tavily_answer}")
-    
+    elif any(
+        keyword in command
+        for keyword in ["gọi", "điện thoại", "điện cho", "gọi cho"]
+    ):
+        request_call(command)
+        
     # elif any(
     #     keyword in command
     #     for keyword in [
