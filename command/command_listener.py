@@ -5,6 +5,8 @@ from google.cloud import speech
 from microphone_stream import MicrophoneStream 
 from lms_filter import *
 import time
+from playsound import playsound
+WELCOME_SOUND="command/sound/welcome1.mp3"
 MYKEY_PATH = os.path.join(os.getcwd(), "my_key.json")
 def listen_command(max_attempts=2):
     recognizer = sr.Recognizer()
@@ -12,6 +14,7 @@ def listen_command(max_attempts=2):
     while attempts < max_attempts:
         with sr.Microphone() as source:
             print("Listening........................")
+            playsound(WELCOME_SOUND)
             recognizer.adjust_for_ambient_noise(source, duration=1)  
             try:
                 audio = recognizer.listen(source, timeout=7, phrase_time_limit=7)
@@ -40,6 +43,7 @@ def listen_commands(max_attempts=2, filter_len=5, mu=0.01):
     while attempts < max_attempts:
         with sr.Microphone() as source:
             print("Listening........................")
+            playsound(WELCOME_SOUND)
             recognizer.adjust_for_ambient_noise(source, duration=1)
             try:
                 audio = recognizer.listen(source, timeout=7, phrase_time_limit=7)
@@ -94,6 +98,7 @@ def listen_commands(max_attempts=2, timeout_duration=7):
     while attempts < max_attempts:
         try:
             print("Listening........................")
+            playsound(WELCOME_SOUND)
             audio_stream = MicrophoneStream(16000, 1024, timeout_duration)  
             with audio_stream as stream:
                 audio_generator = stream.generator()
@@ -124,6 +129,7 @@ def standalone_listen():
     while True:
         with sr.Microphone() as source:
             print("Listening........................")
+            playsound(WELCOME_SOUND)
             recognizer.adjust_for_ambient_noise(source, duration=1)
             try:
                 audio = recognizer.listen(source, timeout=60, phrase_time_limit=7)

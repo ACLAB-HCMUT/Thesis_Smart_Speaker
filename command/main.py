@@ -3,8 +3,6 @@ import sys
 import os
 sys.path.append(os.path.dirname(__file__))
 # from notification import monitor_temperature, monitor_moisture
-from playsound import playsound
-WELCOME_SOUND="command/sound/welcome2.mp3"
 from audio_utils import speak
 import re
 import threading
@@ -25,8 +23,7 @@ def main():
 
     # monitor_temperature()
     # monitor_moisture()
-    playsound(WELCOME_SOUND)
-    greeting = random.choice(greetings)
+    # greeting = random.choice(greetings)
     import_thread.join()
     # speak(greeting)
     while True:

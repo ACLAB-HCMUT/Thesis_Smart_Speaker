@@ -1,17 +1,17 @@
-from Adafruit_IO import Client
+# from Adafruit_IO import Client
 import os
 from dotenv import load_dotenv
 from httpx import RequestError
 
 load_dotenv()
-AIO_USERNAME = os.getenv("AIO_USERNAME")
-AIO_KEY = os.getenv("AIO_KEY")
-try:
-    aio = Client(AIO_USERNAME, AIO_KEY)
-    print("Đã kết nối thành công với Adafruit IO.")
-except Exception as e:
-    print(f"Lỗi khi kết nối với Adafruit IO: {e}")
-    raise
+# AIO_USERNAME = os.getenv("AIO_USERNAME")
+# AIO_KEY = os.getenv("AIO_KEY")
+# try:
+#     aio = Client(AIO_USERNAME, AIO_KEY)
+#     print("Đã kết nối thành công với Adafruit IO.")
+# except Exception as e:
+#     print(f"Lỗi khi kết nối với Adafruit IO: {e}")
+#     raise
 
 
 
