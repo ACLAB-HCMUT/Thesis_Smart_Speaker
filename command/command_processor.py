@@ -14,7 +14,6 @@ from navigation import process_direction
 # from math_calculation import math_calculation
 from tuning import control
 from weather import fetch_weather_data 
-from telecom_send import request_call
 import re
 
 current_eight_d_audio = None
@@ -243,12 +242,7 @@ def process_command(command):
         tavily_answer = search_and_summarize(command)
         speak(tavily_answer)
         print(f"Final Answer: {tavily_answer}")
-    elif any(
-        keyword in command
-        for keyword in ["gọi", "điện thoại", "điện cho", "gọi cho"]
-    ):
-        request_call(command)
-        
+                
     # elif any(
     #     keyword in command
     #     for keyword in [
