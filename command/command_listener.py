@@ -7,8 +7,9 @@ from lms_filter import *
 import time
 from playsound import playsound
 WELCOME_SOUND="command/sound/welcome1.mp3"
+ERROR_SOUND="command/sound/end_error.mp3"
 MYKEY_PATH = os.path.join(os.getcwd(), "my_key.json")
-def listen_command(max_attempts=2):
+def listen_command(max_attempts=1):
     recognizer = sr.Recognizer()
     attempts = 0
     while attempts < max_attempts:
@@ -24,14 +25,17 @@ def listen_command(max_attempts=2):
             except sr.UnknownValueError:
                 attempts += 1
                 print("Không thể nhận diện được giọng nói.")
-                speak("Bạn nói gì tôi nghe không rõ.")
+                # speak("Bạn nói gì tôi nghe không rõ.")
+                playsound(ERROR_SOUND)
             except sr.WaitTimeoutError:
                 attempts += 1
                 print("Không nghe thấy giọng nói. Hãy thử lại.")
-                speak("Môi trường có vẻ hơi ồn, hãy thử lại ở nơi yên tĩnh hơn.")
+                # speak("Môi trường có vẻ hơi ồn, hãy thử lại ở nơi yên tĩnh hơn.")
+                playsound(ERROR_SOUND)
             except sr.RequestError as e:
                 print(f"Không thể yêu cầu dịch vụ Google Speech Recognition; {e}")
-                speak("Có vấn đề với kết nối mạng, vui lòng kiểm tra kết nối mạng.")
+                # speak("Có vấn đề với kết nối mạng, vui lòng kiểm tra kết nối mạng.")
+                playsound(ERROR_SOUND)
                 return None
     speak("Hẹn gặp lại")
     return None
