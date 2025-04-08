@@ -15,7 +15,7 @@ from navigation import process_direction
 # from tuning import control
 from weather import fetch_weather_data 
 import re
-from find_phone import make_call
+# from find_phone import make_call
 
 current_eight_d_audio = None
 def process_command(command):
