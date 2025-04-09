@@ -1,6 +1,5 @@
-from gtts import gTTS
+# from gtts import gTTS
 from playsound import playsound
-from pydub import AudioSegment
 from google.cloud import texttospeech
 import os
 SOUND_PATH = "command/sound/command.mp3" 
@@ -18,9 +17,11 @@ def load_google_credentials():
     
     
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials_path
-    print(f"Đã load credentials từ: {credentials_path}")
+    # print(f"Đã load credentials từ: {credentials_path}")
 load_google_credentials()
+
 def speak_female(text):
+
     try:
         client = texttospeech.TextToSpeechClient()
 
@@ -38,15 +39,17 @@ def speak_female(text):
         response = client.synthesize_speech(
             input=input_text, voice=voice, audio_config=audio_config
         )
-       
+
         output_file = SOUND_PATH
+        
         with open(output_file, "wb") as out:
             out.write(response.audio_content)
-
+      
         playsound(output_file)
 
     except Exception as e:
         print(f"Đã xảy ra lỗi: {e}")
+
 
 def speak_male(text):
     try:

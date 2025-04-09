@@ -5,7 +5,6 @@ from google.cloud import speech
 from microphone_stream import MicrophoneStream 
 from lms_filter import *
 import time
-from playsound import playsound
 WELCOME_SOUND="command/sound/welcome1.mp3"
 ERROR_SOUND="command/sound/end_error.mp3"
 MYKEY_PATH = os.path.join(os.getcwd(), "my_key.json")
@@ -15,7 +14,7 @@ def listen_command(max_attempts=1):
     while attempts < max_attempts:
         with sr.Microphone() as source:
             print("Listening........................")
-            playsound(WELCOME_SOUND)
+          
             recognizer.adjust_for_ambient_noise(source, duration=1)  
             try:
                 audio = recognizer.listen(source, timeout=7, phrase_time_limit=7)
@@ -25,17 +24,17 @@ def listen_command(max_attempts=1):
             except sr.UnknownValueError:
                 attempts += 1
                 print("Không thể nhận diện được giọng nói.")
-                # speak("Bạn nói gì tôi nghe không rõ.")
-                playsound(ERROR_SOUND)
+                speak("Bạn nói gì tôi nghe không rõ.")
+                
             except sr.WaitTimeoutError:
                 attempts += 1
                 print("Không nghe thấy giọng nói. Hãy thử lại.")
-                # speak("Môi trường có vẻ hơi ồn, hãy thử lại ở nơi yên tĩnh hơn.")
-                playsound(ERROR_SOUND)
+                speak("Môi trường có vẻ hơi ồn, hãy thử lại ở nơi yên tĩnh hơn.")
+               
             except sr.RequestError as e:
                 print(f"Không thể yêu cầu dịch vụ Google Speech Recognition; {e}")
-                # speak("Có vấn đề với kết nối mạng, vui lòng kiểm tra kết nối mạng.")
-                playsound(ERROR_SOUND)
+                speak("Có vấn đề với kết nối mạng, vui lòng kiểm tra kết nối mạng.")
+                
                 return None
     speak("Hẹn gặp lại")
     return None
@@ -47,10 +46,10 @@ def listen_commands(max_attempts=2, filter_len=5, mu=0.01):
     while attempts < max_attempts:
         with sr.Microphone() as source:
             print("Listening........................")
-            playsound(WELCOME_SOUND)
+            
             recognizer.adjust_for_ambient_noise(source, duration=1)
             try:
-                audio = recognizer.listen(source, timeout=7, phrase_time_limit=7)
+                audio = recognizer.listen(source, timeout=10, phrase_time_limit=7)
                 audio_data = np.frombuffer(audio.frame_data, dtype=np.int16)
                 
                 reference_signal = np.random.normal(0, 1, len(audio_data)) 
@@ -102,7 +101,7 @@ def listen_commands(max_attempts=2, timeout_duration=7):
     while attempts < max_attempts:
         try:
             print("Listening........................")
-            playsound(WELCOME_SOUND)
+           
             audio_stream = MicrophoneStream(16000, 1024, timeout_duration)  
             with audio_stream as stream:
                 audio_generator = stream.generator()
@@ -133,7 +132,7 @@ def standalone_listen():
     while True:
         with sr.Microphone() as source:
             print("Listening........................")
-            playsound(WELCOME_SOUND)
+          
             recognizer.adjust_for_ambient_noise(source, duration=1)
             try:
                 audio = recognizer.listen(source, timeout=60, phrase_time_limit=7)
