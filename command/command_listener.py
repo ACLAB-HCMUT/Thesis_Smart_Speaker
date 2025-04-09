@@ -5,6 +5,7 @@ from google.cloud import speech
 from microphone_stream import MicrophoneStream 
 from lms_filter import *
 import time
+from playsound import playsound
 WELCOME_SOUND="command/sound/welcome1.mp3"
 ERROR_SOUND="command/sound/end_error.mp3"
 MYKEY_PATH = os.path.join(os.getcwd(), "my_key.json")
@@ -14,7 +15,7 @@ def listen_command(max_attempts=1):
     while attempts < max_attempts:
         with sr.Microphone() as source:
             print("Listening........................")
-          
+            playsound(WELCOME_SOUND)
             recognizer.adjust_for_ambient_noise(source, duration=1)  
             try:
                 audio = recognizer.listen(source, timeout=7, phrase_time_limit=7)
