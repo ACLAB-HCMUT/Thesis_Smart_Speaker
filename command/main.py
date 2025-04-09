@@ -1,14 +1,14 @@
-import random
-import sys
-import os
+# import random
+# import sys
+# import os
 import time
 start_time = time.time()
-sys.path.append(os.path.dirname(__file__))
+# sys.path.append(os.path.dirname(__file__))
 # from notification import monitor_temperature, monitor_moisture
 import re
 # import threading
-# import time
-# start_time = time.time()
+import time
+start_time = time.time()
 from command_processor import process_command,speak
 from command_listener import listen_command
 # end_time = time.time()
@@ -24,20 +24,20 @@ def main():
     # import_thread = threading.Thread(target=import_modules)
     # import_thread.start()
     end_keywords_pattern = re.compile(r"\b(hết rồi|hết|kết|kết thúc|cảm ơn|thanks|thank you)\b", re.IGNORECASE)
-    greetings = ["Em nghe", "Dạ", "Có em ạ", "Vâng, em nghe"]
-    follow_up_questions = [
-        "Em có thể giúp gì nữa ạ?",
-    ]
+    # greetings = ["Em nghe", "Dạ", "Có em ạ", "Vâng, em nghe"]
+    # follow_up_questions = [
+    #     "Em có thể giúp gì nữa ạ?",
+    # ]
 
     # monitor_temperature()
     # monitor_moisture()
-    greeting = random.choice(greetings)
+    # greeting = random.choice(greetings)
     # import_thread.join()
 
     end_time = time.time()
     execution_time = end_time - start_time
     print(f"Thời gian thực thi: {execution_time:.4f} giây")
-    speak(greeting)
+    # speak(greeting)
 
     while True:
         
