@@ -1,21 +1,15 @@
 # from control import set_volume
-from chatgpt import get_response
 # from device_utils import is_device_command
-from audio_utils import speak, set_default_voice
-from search_agent import search_and_summarize
-from reminders import alarm_reminder_action
+from audio_utils import speak
+from chatgpt import get_response
 # from music8D import search_youtube8,download_and_play_youtube_audio8,stop_music8
-from music import search_youtube,download_and_play_youtube_audio,stop_music
+
+
 # from notification import *
-from my_calendar import get_calendar_events, input_for_add_event,extract_time_from_command,delete_event_by_name_or_time,extract_event_name_from_command
-from time_utils import get_current_time,get_current_date_vn_format
-from kid_mode import play_sound_animal, play_story_sound
-from navigation import process_direction
 # from math_calculation import math_calculation
 # from tuning import control
-from weather import fetch_weather_data 
-import re
-# from find_phone import make_call
+# import re
+
 
 current_eight_d_audio = None
 def process_command(command):
@@ -43,8 +37,10 @@ def process_command(command):
         for keyword in ["phát nhạc", "mở nhạc", "mở bài"]:
             query = query.replace(keyword, "").strip()
         if query:
+            from music import search_youtube
             video_url = search_youtube(query)
             if video_url:
+                from music import download_and_play_youtube_audio
                 speak(f"Mời bạn nghe nhạc {query}.")
                 download_and_play_youtube_audio(video_url)
             else:
@@ -55,6 +51,7 @@ def process_command(command):
         keyword in command
         for keyword in ["báo thức", "nhắc nhở", "hẹn giờ"]
     ):
+        from reminders import alarm_reminder_action
         print ("process:", command)
         response = alarm_reminder_action(command)
         print(response)
@@ -121,23 +118,28 @@ def process_command(command):
     #     print(response)
     #     speak(response)
     elif command =="hôm nay":
+        from weather import fetch_weather_data
+        from time_utils import get_current_date_vn_format
         today= get_current_date_vn_format()
         today += " "
         today += fetch_weather_data()
         speak(today)
     elif command=="thời tiết" or command=="thời tiết hôm nay":
+        from weather import fetch_weather_data 
         speak(fetch_weather_data())
 
     elif any(
         keyword in command
         for keyword in ["giọng nữ", "giọng con gái", "giọng đàn bà", "giọng phụ nữ"]
     ):
+        from audio_utils import set_default_voice
         set_default_voice("female")
         return 
     elif any(
         keyword in command
         for keyword in ["giọng nam", "giọng con trai", "giọng đàn ông"]
     ):
+        from audio_utils import set_default_voice
         set_default_voice("male")
         return
     # elif "giọng mặc định" in command:
@@ -146,13 +148,15 @@ def process_command(command):
     elif any(
         keyword in command
         for keyword in ["lấy lịch", "xem lịch", "hiển thị lịch", "danh sách sự kiện", "xem sự kiện"]
-    ):
+    ):  
+        from my_calendar import get_calendar_events
         print("Đang lấy danh sách sự kiện...")
         speak(get_calendar_events())
     elif any(
          keyword in command
          for keyword in ["tìm điện thoại", "tìm", "kiếm điện thoại","kiếm"]
-     ):
+     ):  
+         from find_phone import make_call
          make_call()
          speak("Đang nhá máy điện thoại")
     elif any(
@@ -165,7 +169,8 @@ def process_command(command):
             "hiện tại đang mấy giờ",
             "hiện tại mấy giờ",
         ]
-    ):
+    ):  
+        from time_utils import get_current_time
         get_current_time()
     elif any(
         keyword in command
@@ -174,8 +179,10 @@ def process_command(command):
         print("Đang xóa sự kiện...")
 
         if "vào" in command or "ngày" in command:
+            from my_calendar import extract_time_from_command
             time_to_delete = extract_time_from_command(command)
             if time_to_delete:
+                from my_calendar import delete_event_by_name_or_time
                 response = delete_event_by_name_or_time(start_time=time_to_delete)
                 print(f"Đã xóa sự kiện vào {time_to_delete}.")
             else:
@@ -183,9 +190,10 @@ def process_command(command):
             speak(response)
 
         else:
-           
+            from my_calendar import extract_event_name_from_command
             event_name = extract_event_name_from_command(command)
             if event_name:
+                from my_calendar import delete_event_by_name_or_time
                 response = delete_event_by_name_or_time(summary=event_name)
                 print(f"Đã xóa sự kiện '{event_name}'.")
             else:
@@ -197,6 +205,7 @@ def process_command(command):
     elif any(
         keyword in command for keyword in ["thêm sự kiện", "tạo sự kiện", "lên sự kiện","thêm lịch", "lên lịch"]
     ):  
+        from my_calendar import input_for_add_event
         input_for_add_event()  # add_event inside here
         # print("Đang tạo sự kiện mới...")
         # summary = "Họp nhóm dự án"
@@ -231,20 +240,25 @@ def process_command(command):
     #     print(response)
     #     speak(response)
     elif any(keyword in command for keyword in ["dừng nhạc", "tắt nhạc"]):
+        from music import stop_music
         stop_music()
         # stop_music8()
 
     elif "kêu" in command or ("tiếng" in command and "kêu" in command):
+        from kid_mode import play_sound_animal
         play_sound_animal(command)
     elif "kể" in command and ("truyện" in command or "chuyện" in command):
         print("Đang kể truyện...")
+        from kid_mode import play_story_sound
         play_story_sound()
     elif any(keyword in command for keyword in ["đường từ", "tìm đường", "chỉ đường", "hướng dẫn đường", "đường đi từ", "hỏi đường"]):
+        from navigation import process_direction
         process_direction(command)
     elif any(
         keyword in command
         for keyword in ["thời tiết", "tin tức", "hôm nay", "hiện nay", "thời sự"]
-    ):
+    ):  
+        from search_agent import search_and_summarize
         tavily_answer = search_and_summarize(command)
         speak(tavily_answer)
         print(f"Final Answer: {tavily_answer}")
@@ -279,6 +293,7 @@ def process_command(command):
     #         speak("Xin lỗi, tôi không thể xử lý phép toán này.")
     else:
         print("Gửi yêu cầu đến ChatGPT API...")
+        
         chatgpt_answer = get_response(command)
         print(f"ChatGPT trả lời: {chatgpt_answer}")
         speak(chatgpt_answer)
