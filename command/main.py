@@ -1,22 +1,26 @@
 import random
 import sys
 import os
+import time
+start_time = time.time()
 sys.path.append(os.path.dirname(__file__))
 # from notification import monitor_temperature, monitor_moisture
-from audio_utils import speak
 import re
-import threading
-from command_processor import process_command
-from audio_utils import speak
+# import threading
+# import time
+# start_time = time.time()
+from command_processor import process_command,speak
 from command_listener import listen_command
-
+# end_time = time.time()
+# execution_time = end_time - start_time
+# print(f"Thời gian thực thi: {execution_time:.4f} giây")
 # def import_modules():
 #     global process_command, speak, listen_command
 #     from command_processor import process_command
 #     from audio_utils import speak
 #     from command_listener import listen_command
-
 def main():
+    
     # import_thread = threading.Thread(target=import_modules)
     # import_thread.start()
     end_keywords_pattern = re.compile(r"\b(hết rồi|hết|kết|kết thúc|cảm ơn|thanks|thank you)\b", re.IGNORECASE)
@@ -27,10 +31,16 @@ def main():
 
     # monitor_temperature()
     # monitor_moisture()
-    # greeting = random.choice(greetings)
+    greeting = random.choice(greetings)
     # import_thread.join()
-    # speak(greeting)
+
+    end_time = time.time()
+    execution_time = end_time - start_time
+    print(f"Thời gian thực thi: {execution_time:.4f} giây")
+    speak(greeting)
+
     while True:
+        
         command = listen_command()
         if command is None:
             print("Terminated due to failure to recognize speech.")
