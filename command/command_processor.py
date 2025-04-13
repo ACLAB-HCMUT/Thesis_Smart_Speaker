@@ -17,6 +17,45 @@ def process_command(command):
     global default_voice
     global current_eight_d_audio
     command=command.lower()
+    if "chuyển sang" in command and "youtube" in command:
+        import subprocess
+        speak("Chuyển sang nguồn nhạc YouTube.")
+        print("Chuyển sang nguồn nhạc YouTube.")
+        subprocess.run(["python", "./change_stream.py", "YouTube"])
+        return
+
+
+    elif "chuyển sang" in command and "spotify" in command:
+        import subprocess
+        speak("Chuyển sang nguồn nhạc Spotify.")
+        print("Chuyển sang nguồn nhạc Spotify.")
+        subprocess.run(["python", "./change_stream.py", "Spotify"])
+        return
+
+    elif any(keyword in command for keyword in ["phát nhạc", "nhạc", "mở bài"]):
+        query = command
+        for keyword in ["phát nhạc", "mở nhạc", "mở bài", "đi"]:
+            query = query.replace(keyword, "").strip()
+        if query:
+            speak(f"Đang phát bài {query}.")
+            import subprocess
+            print("./play_yt.sh", query)
+            subprocess.run(["./play_yt.sh", query])
+        else:
+            speak("Vui lòng nói rõ tên bài hát bạn muốn phát.")
+    elif "dừng nhạc" in command :
+        print("dừng nhạc")
+        import subprocess
+        speak("Đang dừng nhạc")
+        print("Đang dừng nhạc.")
+        subprocess.run(["pause"])
+        return
+    elif "tiếp tục" in command and "nhạc" in command :
+        import subprocess
+        speak("Đang tiếp tục nhạc")
+        print("Đang tiếp tục nhạc")
+        subprocess.run(["resume"])
+        return
     # if any(keyword in command for keyword in ["8d","8D","tám đê", "8 đê"]):
 
     #     query = command
@@ -31,22 +70,22 @@ def process_command(command):
     #             speak("Không tìm thấy bài hát trên YouTube.")
     #     else:
     #         speak("Vui lòng nói rõ tên bài hát bạn muốn phát.")
-    if any(keyword in command for keyword in ["phát nhạc", "nhạc", "mở bài"]):
+    # if any(keyword in command for keyword in ["phát nhạc", "nhạc", "mở bài"]):
 
-        query = command
-        for keyword in ["phát nhạc", "mở nhạc", "mở bài"]:
-            query = query.replace(keyword, "").strip()
-        if query:
-            from music import search_youtube
-            video_url = search_youtube(query)
-            if video_url:
-                from music import download_and_play_youtube_audio
-                speak(f"Mời bạn nghe nhạc {query}.")
-                download_and_play_youtube_audio(video_url)
-            else:
-                speak("Không tìm thấy bài hát trên YouTube.")
-        else:
-            speak("Vui lòng nói rõ tên bài hát bạn muốn phát.")
+    #     query = command
+    #     for keyword in ["phát nhạc", "mở nhạc", "mở bài"]:
+    #         query = query.replace(keyword, "").strip()
+    #     if query:
+    #         from music import search_youtube
+    #         video_url = search_youtube(query)
+    #         if video_url:
+    #             from music import download_and_play_youtube_audio
+    #             speak(f"Mời bạn nghe nhạc {query}.")
+    #             download_and_play_youtube_audio(video_url)
+    #         else:
+    #             speak("Không tìm thấy bài hát trên YouTube.")
+    #     else:
+    #         speak("Vui lòng nói rõ tên bài hát bạn muốn phát.")
     elif any(
         keyword in command
         for keyword in ["báo thức", "nhắc nhở", "hẹn giờ"]
