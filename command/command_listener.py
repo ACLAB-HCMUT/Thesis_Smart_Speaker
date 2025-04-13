@@ -9,7 +9,7 @@ from playsound import playsound
 WELCOME_SOUND="command/sound/welcome1.mp3"
 ERROR_SOUND="command/sound/end_error.mp3"
 MYKEY_PATH = os.path.join(os.getcwd(), "my_key.json")
-def listen_command(max_attempts=1):
+def listen_commands(max_attempts=1):
     recognizer = sr.Recognizer()
     attempts = 0
     while attempts < max_attempts:
@@ -84,7 +84,7 @@ def load_google_credentials():
         raise FileNotFoundError(f"Không tìm thấy file credentials tại: {credentials_path}")
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials_path
 load_google_credentials() 
-def listen_commands(max_attempts=2, timeout_duration=7):
+def listen_command(max_attempts=1, timeout_duration=10):
     
     client = speech.SpeechClient()
 
@@ -102,7 +102,7 @@ def listen_commands(max_attempts=2, timeout_duration=7):
     while attempts < max_attempts:
         try:
             print("Listening........................")
-           
+            playsound(WELCOME_SOUND)
             audio_stream = MicrophoneStream(16000, 1024, timeout_duration)  
             with audio_stream as stream:
                 audio_generator = stream.generator()

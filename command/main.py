@@ -1,9 +1,9 @@
 # import random
-# import sys
-# import os
+import sys
+import os
 import time
 start_time = time.time()
-# sys.path.append(os.path.dirname(__file__))
+sys.path.append(os.path.dirname(__file__))
 # from notification import monitor_temperature, monitor_moisture
 import re
 # import threading
