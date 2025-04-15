@@ -1,61 +1,155 @@
-# from control import set_volume
-# from device_utils import is_device_command
-from audio_utils import speak
+import subprocess
+import threading
+import socket
+import json
 from chatgpt import get_response
-# from music8D import search_youtube8,download_and_play_youtube_audio8,stop_music8
+import speech_recognition as sr
+from audio_utils import speak
+from command_listener import standalone_listen
 
+music_process = None
+stop_thread = None
 
-# from notification import *
-# from math_calculation import math_calculation
-# from tuning import control
-# import re
+# def send_mpv_command(command):
+#     try:
+#         client = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+#         client.connect("/tmp/mpv_socket")
+#         client.send((json.dumps(command) + "\n").encode())
+#         client.close()
+#     except Exception as e:
+#         print("⚠️ Không gửi được lệnh đến mpv:", e)
 
+# def pause_music():
+#     print("⏸ Gửi lệnh pause.")
+#     send_mpv_command({ "command": ["set_property", "pause", True] })
 
-current_eight_d_audio = None
+# def resume_music():
+#     print("▶️ Gửi lệnh resume.")
+#     send_mpv_command({ "command": ["set_property", "pause", False] })
+
+# def listen_for_music_commands():
+#     while True:
+#         command = standalone_listen()
+#         if command:
+#             command = command.lower()
+#             if "Dừng nhạc" in command or "Tắt nhạc" in command or "pause" in command:
+#                 speak("Đã dừng nhạc.")
+#                 pause_music()
+#                 break
+#             elif "Tiếp tục" in command or "resume" in command:
+#                 speak("Tiếp tục nhạc.")
+#                 resume_music()
+#                 break
+
+def control_mpv(state):
+    try:
+        client = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+        client.connect("/tmp/mpv_socket")
+        client.send((json.dumps(state) + "\n").encode("utf-8"))
+        response = client.recv(1024)
+        client.close()
+        print("🎵 Phản hồi từ mpv:", response.decode("utf-8"))
+    except Exception as e:
+        print("❌ Không gửi được lệnh tới mpv:", e)
+
+def listen_for_command():
+    recognizer = sr.Recognizer()
+    mic = sr.Microphone()
+
+    print("🎤 Đang lắng nghe... Hãy nói 'dừng nhạc' để tắt.")
+    with mic as source:
+        recognizer.adjust_for_ambient_noise(source)
+        while True:
+            try:
+                audio = recognizer.listen(source, timeout=5)
+                command = recognizer.recognize_google(audio, language='vi-VN').lower()
+                print("Nghe được:", command)
+
+                if "stop" in command or "Tắt nhạc" in command or "tắt nhạc" in command:
+                    control_mpv("quit")
+                    break
+                elif "pause" in command or "Tạm dừng" in command or "tạm dừng" in command:
+                    control_mpv({ "command": ["set_property", "pause", True] })
+                    continue
+                elif "resume" in command or "Tiếp tục" in command or "tiếp tục" in command:
+                    control_mpv({ "command": ["set_property", "pause", False] })
+                    continue
+                elif "volume up to 10" in command or "Tăng âm lượng lên 10" in command or "tăng âm lượng lên 10" in command or "tăng âm lượng lên mười" in command or "Tăng âm lượng lên mười" in command:
+                    control_mpv({"command": ["add", "volume", 10]})
+                    continue
+                elif "volume up to 5" in command or "Tăng âm lượng lên 5" in command or "tăng âm lượng lên 5" in command or "tăng âm lượng lên năm" in command or "Tăng âm lượng lên năm" in command:
+                    control_mpv({"command": ["add", "volume", 5]})
+                    continue
+                elif "volume up to 25" in command or "Tăng âm lượng lên 25" in command or "tăng âm lượng lên 25" in command or "tăng âm lượng lên hai mươi lăm" in command or "Tăng âm lượng lên hai lăm" in command:
+                    control_mpv({"command": ["add", "volume", 25]})
+                    continue
+                elif "volume down to 10" in command or "Giảm âm lượng xuống 10" in command or "giảm âm lượng xuống 10" in command or "giảm âm lượng xuống mười" in command or "Giảm âm lượng xuống mười" in command:
+                    control_mpv({"command": ["add", "volume", -10]})
+                    continue
+                elif "volume down to 5" in command or "Giảm âm lượng xuống 5" in command or "giảm âm lượng xuống 5" in command or "giảm âm lượng xuống năm" in command or "Giảm âm lượng xuống năm" in command:
+                    control_mpv({"command": ["add", "volume", -5]})
+                    continue
+                elif "volume down to 25" in command or "Giảm âm lượng xuống 25" in command or "giảm âm lượng xuống 25" in command or "giảm âm lượng xuống hai mươi lăm" in command or "Giảm âm lượng xuống hai lăm" in command:
+                    control_mpv({"command": ["add", "volume", -25]})
+                    continue
+
+            except sr.WaitTimeoutError:
+                continue
+            except sr.UnknownValueError:
+                continue
+            except sr.RequestError as e:
+                print("❌ Lỗi kết nối API:", e)
+                break
+
 def process_command(command):
     global music_process
-    global default_voice
-    global current_eight_d_audio
-    command=command.lower()
-    if "chuyển sang" in command and "youtube" in command:
-        import subprocess
-        speak("Chuyển sang nguồn nhạc YouTube.")
-        print("Chuyển sang nguồn nhạc YouTube.")
-        subprocess.run(["python", "./change_stream.py", "YouTube"])
-        return
+    global stop_thread
 
+    command = command.lower()
 
-    elif "chuyển sang" in command and "spotify" in command:
-        import subprocess
-        speak("Chuyển sang nguồn nhạc Spotify.")
-        print("Chuyển sang nguồn nhạc Spotify.")
-        subprocess.run(["python", "./change_stream.py", "Spotify"])
-        return
-
-    elif any(keyword in command for keyword in ["phát nhạc", "nhạc", "mở bài"]):
+    if any(keyword in command for keyword in ["phát nhạc", "nhạc", "mở bài"]):
         query = command
         for keyword in ["phát nhạc", "mở nhạc", "mở bài", "đi"]:
             query = query.replace(keyword, "").strip()
+
         if query:
-            speak(f"Đang phát bài {query}.")
-            import subprocess
-            print("./play_yt.sh", query)
-            subprocess.run(["./play_yt.sh", query])
+            speak(f"Đang phát bài {query}")
+            print(f"🎵 Đang phát bài: {query}")
+
+            try:
+                music_process = subprocess.Popen(["./play_yt.sh", query])
+                listener_thread = threading.Thread(target=listen_for_command)
+                listener_thread.start()
+
+                # music_process.wait()
+
+                # stop_thread = threading.Thread(target=listen_for_music_commands)
+                # stop_thread.daemon = True
+                # stop_thread.start()
+                # music_process.wait()
+                # print("✅ Bài hát đã phát xong.")
+                # music_process = None
+            except Exception as e:
+                print("❌ Lỗi khi phát nhạc:", e)
+                music_process = None
         else:
             speak("Vui lòng nói rõ tên bài hát bạn muốn phát.")
-    elif "dừng nhạc" in command :
-        print("dừng nhạc")
-        import subprocess
-        speak("Đang dừng nhạc")
-        print("Đang dừng nhạc.")
-        subprocess.run(["pause"])
-        return
-    elif "tiếp tục" in command and "nhạc" in command :
-        import subprocess
-        speak("Đang tiếp tục nhạc")
-        print("Đang tiếp tục nhạc")
-        subprocess.run(["resume"])
-        return
+
+    # elif "dừng nhạc" in command or "pause" in command:
+    #     speak("Đang dừng nhạc.")
+    #     pause_music()
+
+    # elif "tiếp tục" in command and "nhạc" in command:
+    #     speak("Tiếp tục nhạc.")
+    #     resume_music()
+
+    elif "chuyển sang" in command and "youtube" in command:
+        subprocess.run(["python", "./change_stream.py", "YouTube"])
+        speak("Chuyển sang nguồn nhạc YouTube.")
+
+    elif "chuyển sang" in command and "spotify" in command:
+        subprocess.run(["python", "./change_stream.py", "Spotify"])
+        speak("Chuyển sang nguồn nhạc Spotify.")
     # if any(keyword in command for keyword in ["8d","8D","tám đê", "8 đê"]):
 
     #     query = command
@@ -195,7 +289,7 @@ def process_command(command):
          keyword in command
          for keyword in ["tìm điện thoại", "tìm", "kiếm điện thoại","kiếm"]
      ):  
-         from find_phone import make_call
+         
          make_call()
          speak("Đang nhá máy điện thoại")
     elif any(
@@ -336,3 +430,5 @@ def process_command(command):
         chatgpt_answer = get_response(command)
         print(f"ChatGPT trả lời: {chatgpt_answer}")
         speak(chatgpt_answer)
+
+# make_call()

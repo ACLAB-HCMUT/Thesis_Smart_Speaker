@@ -42,4 +42,7 @@ VIDEO_ID=$(curl -s "$API_URL" | jq -r '.items[0].id.videoId')
 # Phát nhạc vào Snapserver bằng mpv
 mpv "$AUDIO_URL" --no-video --audio-display=no --audio-channels=stereo \
     --audio-samplerate=48000 --audio-format=s16 --ao=pcm --ao-pcm-file="$FIFO_PATH" \
-    --input-ipc-server=/tmp/mpv_socket
+    --input-ipc-server=/tmp/mpv_socket \
+    --idle=yes
+
+wait
