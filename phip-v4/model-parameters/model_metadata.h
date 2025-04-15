@@ -84,9 +84,9 @@
 #define EI_CLASSIFIER_PROJECT_ID                 605059
 #define EI_CLASSIFIER_PROJECT_OWNER              "Dat  Pham"
 #define EI_CLASSIFIER_PROJECT_NAME               "Phip"
-#define EI_CLASSIFIER_PROJECT_DEPLOY_VERSION     69
-#define EI_CLASSIFIER_NN_INPUT_FRAME_SIZE        3960
-#define EI_CLASSIFIER_RAW_SAMPLE_COUNT           16000
+#define EI_CLASSIFIER_PROJECT_DEPLOY_VERSION     82
+#define EI_CLASSIFIER_NN_INPUT_FRAME_SIZE        624
+#define EI_CLASSIFIER_RAW_SAMPLE_COUNT           15488
 #define EI_CLASSIFIER_RAW_SAMPLES_PER_FRAME      1
 #define EI_CLASSIFIER_DSP_INPUT_FRAME_SIZE       (EI_CLASSIFIER_RAW_SAMPLE_COUNT * EI_CLASSIFIER_RAW_SAMPLES_PER_FRAME)
 #define EI_CLASSIFIER_INPUT_WIDTH                0
@@ -110,7 +110,7 @@
 #define EI_CLASSIFIER_TFLITE_INPUT_DATATYPE         EI_CLASSIFIER_DATATYPE_INT8
 #define EI_CLASSIFIER_TFLITE_OUTPUT_DATATYPE        EI_CLASSIFIER_DATATYPE_INT8
 
-#define EI_CLASSIFIER_TFLITE_LARGEST_ARENA_SIZE  209478
+#define EI_CLASSIFIER_TFLITE_LARGEST_ARENA_SIZE  6188
 
 #define EI_CLASSIFIER_INFERENCING_ENGINE            EI_CLASSIFIER_TFLITE
 #define EI_CLASSIFIER_COMPILED                      1
@@ -121,7 +121,7 @@
 
 
 #define EI_CLASSIFIER_HAS_FFT_INFO               1
-#define EI_CLASSIFIER_LOAD_FFT_32                0
+#define EI_CLASSIFIER_LOAD_FFT_32                1
 #define EI_CLASSIFIER_LOAD_FFT_64                0
 #define EI_CLASSIFIER_LOAD_FFT_128               0
 #define EI_CLASSIFIER_LOAD_FFT_256               1
@@ -137,7 +137,7 @@
 
 #define EI_CLASSIFIER_SENSOR                     EI_CLASSIFIER_SENSOR_MICROPHONE
 #define EI_CLASSIFIER_FUSION_AXES_STRING         "audio"
-#define EI_CLASSIFIER_CALIBRATION_ENABLED        1
+#define EI_CLASSIFIER_CALIBRATION_ENABLED        0
 #define EI_CLASSIFIER_OBJECT_TRACKING_ENABLED    0
 
 #ifndef EI_CLASSIFIER_SLICES_PER_MODEL_WINDOW
@@ -313,11 +313,7 @@ typedef struct {
 } ei_dsp_config_hr_t;
 
 typedef struct {
-    char* detected_label;
-} ei_perf_cal_output_t;
-
-typedef struct {
-    ei_perf_cal_output_t perf_cal_output;
+    int:0;
 } ei_post_processing_output_t;
 
 
