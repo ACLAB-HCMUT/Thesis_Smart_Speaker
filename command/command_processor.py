@@ -17,14 +17,14 @@ stop_thread = None
 #         client.send((json.dumps(command) + "\n").encode())
 #         client.close()
 #     except Exception as e:
-#         print("⚠️ Không gửi được lệnh đến mpv:", e)
+#         print(" Không gửi được lệnh đến mpv:", e)
 
 # def pause_music():
 #     print("⏸ Gửi lệnh pause.")
 #     send_mpv_command({ "command": ["set_property", "pause", True] })
 
 # def resume_music():
-#     print("▶️ Gửi lệnh resume.")
+#     print(" Gửi lệnh resume.")
 #     send_mpv_command({ "command": ["set_property", "pause", False] })
 
 # def listen_for_music_commands():
@@ -50,13 +50,13 @@ def control_mpv(state):
         client.close()
         print("🎵 Phản hồi từ mpv:", response.decode("utf-8"))
     except Exception as e:
-        print("❌ Không gửi được lệnh tới mpv:", e)
+        print(" Không gửi được lệnh tới mpv:", e)
 
 def listen_for_command():
     recognizer = sr.Recognizer()
     mic = sr.Microphone()
 
-    print("🎤 Đang lắng nghe... Hãy nói 'dừng nhạc' để tắt.")
+    print("Đang lắng nghe...")
     with mic as source:
         recognizer.adjust_for_ambient_noise(source)
         while True:
@@ -68,6 +68,11 @@ def listen_for_command():
                 if "stop" in command or "Tắt nhạc" in command or "tắt nhạc" in command:
                     control_mpv("quit")
                     break
+                elif "đồng bộ" in command:
+                    from send import send_attribute_to_coreiot
+                    send_attribute_to_coreiot("fw_tag", "1")
+                    continue
+
                 elif "pause" in command or "Tạm dừng" in command or "tạm dừng" in command:
                     control_mpv({ "command": ["set_property", "pause", True] })
                     continue
@@ -98,7 +103,7 @@ def listen_for_command():
             except sr.UnknownValueError:
                 continue
             except sr.RequestError as e:
-                print("❌ Lỗi kết nối API:", e)
+                print(" Lỗi kết nối API:", e)
                 break
 
 def process_command(command):
@@ -120,18 +125,16 @@ def process_command(command):
                 music_process = subprocess.Popen(["./play_yt.sh", query])
                 listener_thread = threading.Thread(target=listen_for_command)
                 listener_thread.start()
-
-                # music_process.wait()
-
                 # stop_thread = threading.Thread(target=listen_for_music_commands)
                 # stop_thread.daemon = True
                 # stop_thread.start()
                 # music_process.wait()
-                # print("✅ Bài hát đã phát xong.")
+                # print(" Bài hát đã phát xong.")
                 # music_process = None
             except Exception as e:
-                print("❌ Lỗi khi phát nhạc:", e)
-                music_process = None
+                print(" Lỗi khi phát nhạc:", e)
+                control_mpv("quit")
+                return
         else:
             speak("Vui lòng nói rõ tên bài hát bạn muốn phát.")
 
@@ -142,7 +145,9 @@ def process_command(command):
     # elif "tiếp tục" in command and "nhạc" in command:
     #     speak("Tiếp tục nhạc.")
     #     resume_music()
-
+    elif "ngưng" and "đồng bộ" in command:
+        subprocess.run(["./switch_snapclient.sh", "127.0.0.1"], check=True)
+        speak("Đã ngưng đồng bộ.")
     elif "chuyển sang" in command and "youtube" in command:
         subprocess.run(["python", "./change_stream.py", "YouTube"])
         speak("Chuyển sang nguồn nhạc YouTube.")

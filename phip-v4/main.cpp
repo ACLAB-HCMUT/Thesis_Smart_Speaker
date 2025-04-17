@@ -16,7 +16,9 @@ using namespace std;
 static float audio_buffer[FRAME_LENGTH];
 static int audio_index = 0;
 static bool detected_flag = false;
-static float threshold = 0.52;
+static float threshold = 0.49;
+// static float arr[10] = {0};
+// int i = 0;
 
 static int audio_callback(const void *inputBuffer, void *outputBuffer,
                           unsigned long framesPerBuffer,
@@ -42,8 +44,18 @@ static int audio_callback(const void *inputBuffer, void *outputBuffer,
 
             EI_IMPULSE_ERROR res = run_classifier(&signal, &result, false);
             printf("  %s: %.5f\n", ei_classifier_inferencing_categories[1], result.classification[1].value);
+            // arr[i] = (float)result.classification[1].value;
+            // if (i <= 9) i += 1;
+            // else i = 0;
+            // float sum = 0.0;
+            // for (int i = 0; i < 10; i++) {
+            //     sum += arr[i];
+            // }
+            // threshold = sum/10;
+            // printf("AVG = %.5f\n", threshold);
+
                 if (result.classification[1].value >= threshold) {
-                    // printf("  %s: %.5f\n", ei_classifier_inferencing_categories[1], result.classification[1].value);
+                    printf("  %s: %.5f\n", ei_classifier_inferencing_categories[1], result.classification[1].value);
                     detected_flag = true;
                 }
         }
@@ -61,13 +73,13 @@ int main() {
         if (detected_flag) {
             system("python3 command/main.py");
         }
+        detected_flag = false;
         Pa_Sleep(100);  
     }
 
     Pa_StopStream(stream);
     Pa_CloseStream(stream);
     Pa_Terminate();     
-    }
     return 0;
 }
 
@@ -187,12 +199,12 @@ int main() {
 //     // printf("Timing: DSP %d ms, inference %d ms, anomaly %d ms\n", 
 //     //     result.timing.dsp, result.timing.classification, result.timing.anomaly);
 
-//     // for (uint16_t i = 0; i < EI_CLASSIFIER_LABEL_COUNT; i++) {
-        
-//     // }
-    
-//     if (result.classification[1].value > 0.6f) {
+//     for (uint16_t i = 0; i < EI_CLASSIFIER_LABEL_COUNT; i++) {
 //         printf("%s: %.5f\n", ei_classifier_inferencing_categories[1], result.classification[1].value);
+//     }
+    
+//     if (result.classification[1].value > 0.52f) {
+//         // printf("%s: %.5f\n", ei_classifier_inferencing_categories[1], result.classification[1].value);
 //         return 1;
 //     }
 
