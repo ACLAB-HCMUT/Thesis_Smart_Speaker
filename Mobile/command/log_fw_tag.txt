@@ -1,0 +1,262 @@
+da ket noi iot
+da ket noi iot
+da ket noi iot
+da ket noi iot
+da ket noi iot
+da ket noi iot
+da ket noi iot
+da ket noi iot
+da ket noi iot
+===============
+<class 'int'>
+===============
+===============
+<class 'int'>
+===============
+da ket noi iot
+da ket noi iot
+da ket noi iot
+===============
+<class 'int'>
+===============
+da ket noi iot
+===============
+<class 'int'>
+===============
+da ket noi iot
+da ket noi iot
+===============
+<class 'int'>
+===============
+da ket noi iot
+===============
+<class 'int'>
+===============
+da ket noi iot
+da ket noi iot
+da ket noi iot
+da ket noi iot
+===============
+<class 'int'>
+===============
+da ket noi iot
+===============
+<class 'int'>
+===============
+da ket noi iot
+===============
+<class 'int'>
+===============
+da ket noi iot
+===============
+<class 'int'>
+===============
+da ket noi iot
+===============
+<class 'int'>
+===============
+da ket noi iot
+===============
+<class 'int'>
+===============
+da ket noi iot
+da ket noi iot
+===============
+<class 'int'>
+===============
+da ket noi iot
+===============
+<class 'int'>
+===============
+===============
+<class 'int'>
+===============
+da ket noi iot
+===============
+<class 'int'>
+===============
+da ket noi iot
+da ket noi iot
+===============
+<class 'int'>
+===============
+===============
+<class 'int'>
+===============
+da ket noi iot
+===============
+<class 'int'>
+===============
+da ket noi iot
+===============
+<class 'int'>
+===============
+da ket noi iot
+===============
+<class 'int'>
+===============
+da ket noi iot
+da ket noi iot
+===============
+<class 'int'>
+===============
+da ket noi iot
+da ket noi iot
+===============
+<class 'int'>
+===============
+da ket noi iot
+===============
+<class 'int'>
+===============
+da ket noi iot
+da ket noi iot
+da ket noi iot
+===============
+<class 'int'>
+===============
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+1
+da ket noi iot
+da ket noi iot
+da ket noi iot
+da ket noi iot
+===============
+<class 'int'>
+===============
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+1
+da ket noi iot
+da ket noi iot
+da ket noi iot
+da ket noi iot
+da ket noi iot
+===============
+<class 'int'>
+===============
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+1
+Loi khi doc payload: name 'send_attribute_to_coreiot' is not defined
+da ket noi iot
+da ket noi iot
+da ket noi iot
+da ket noi iot
+da ket noi iot
+da ket noi iot
+da ket noi iot
+===============
+<class 'int'>
+===============
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+1
+ ket noi toi CoreIoT (rc=0)
+ da gui: {'fw_tag': '0'}
+ ket noi toi CoreIoT (rc=0)
+ da gui: {'fw_tag': '0'}
+ngat ket noi.
+
+da ket noi iot
+da ket noi iot
+===============
+<class 'int'>
+===============
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+1
+ ket noi toi CoreIoT (rc=0)
+ da gui: {'fw_tag': '0'}
+ ket noi toi CoreIoT (rc=0)
+ da gui: {'fw_tag': '0'}
+ngat ket noi.
+
+da ket noi iot
+===============
+<class 'int'>
+===============
+da ket noi iot
+===============
+<class 'int'>
+===============
+da ket noi iot
+===============
+<class 'int'>
+===============
+da ket noi iot
+===============
+<class 'int'>
+===============
+da ket noi iot
+===============
+<class 'int'>
+===============
+da ket noi iot
+===============
+<class 'int'>
+===============
+da ket noi iot
+===============
+<class 'int'>
+===============
+da ket noi iot
+===============
+<class 'int'>
+===============
+da ket noi iot
+===============
+<class 'int'>
+===============
+da ket noi iot
+===============
+<class 'int'>
+===============
+da ket noi iot
+===============
+<class 'int'>
+===============
+da ket noi iot
+===============
+<class 'int'>
+===============
+da ket noi iot
+===============
+<class 'int'>
+===============
+da ket noi iot
+===============
+<class 'int'>
+===============
+da ket noi iot
+===============
+<class 'int'>
+===============
+da ket noi iot
+da ket noi iot
+da ket noi iot
+da ket noi iot
+da ket noi iot
+da ket noi iot
+da ket noi iot
+da ket noi iot
+da ket noi iot
+da ket noi iot
+da ket noi iot
+da ket noi iot
+da ket noi iot
+da ket noi iot
+da ket noi iot
+da ket noi iot
+da ket noi iot
+da ket noi iot
+da ket noi iot
+da ket noi iot
+da ket noi iot
+da ket noi iot
+da ket noi iot
+da ket noi iot
+da ket noi iot
+da ket noi iot
+da ket noi iot
+da ket noi iot
+da ket noi iot
+da ket noi iot
+da ket noi iot
+da ket noi iot
